@@ -1,0 +1,272 @@
+---
+title: "What is TanStack Table and How to Use It?"
+date: "2025-08-25"
+tags: ["tanstack", "react", "frontend", "table", "tutorial"]
+summary: "TanStack Table is a powerful library that manages table features (sorting, filtering, pagination). In this article, I show you step by step how to use it."
+---
+
+In modern web applications, displaying data in tables appears in almost every project. However, tables are not just about listing data; interactive features such as filtering, sorting, searching, and pagination directly affect the user experience.
+
+At this point, **TanStack Table** comes into play. While the library handles all these essential features for you, you are free to design the UI part however you want.
+
+---
+
+## Example Project
+
+📌 To see the code explained below live: [*TanStack Table Demo*](https://codesandbox.io/p/sandbox/hdswpw?file=%2Fsrc%2FApp.tsx%3A79%2C16)
+
+---
+
+## What is TanStack Table?
+
+TanStack Table is a **headless library** that manages the core mechanics of a table.
+
+- It takes care of all data-driven functionality (filtering, sorting, searching, pagination).
+- The visual part is entirely up to the developer.
+
+In other words, with TanStack you can build a powerful table infrastructure and design the UI with whichever library or styling method you prefer.
+
+For example:
+- Ready-to-use table components: **ShadcnUI Table**, **MUI Table**
+- Your own design: **TailwindCSS** or plain CSS
+
+---
+
+## How to Use TanStack Table?
+
+### 1. Installation
+
+```bash
+npm i @tanstack/react-table
+# or
+yarn add @tanstack/react-table
+```
+
+---
+
+### 2. Import Statements
+
+```tsx
+import * as React from "react";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  useReactTable,
+  type SortingState,
+  type ColumnFiltersState,
+} from "@tanstack/react-table";
+import "./styles.css";
+```
+
+---
+
+### 3. Data Type and Example Data
+
+```tsx
+type User = {
+  id: string;
+  fullName: string;
+  email: string;
+  role: "admin" | "editor" | "viewer";
+};
+
+const data: User[] = [
+  {
+    id: "1",
+    fullName: "Ada Lovelace",
+    email: "ada@calc.io",
+    role: "admin",
+  },
+  {
+    id: "2",
+    fullName: "Grace Hopper",
+    email: "grace@navy.mil",
+    role: "editor",
+  },
+  // ...
+];
+```
+
+---
+
+### 4. Column Definitions
+
+```tsx
+const columns = React.useMemo<ColumnDef<User>[]>(
+  () => [
+    { accessorKey: "fullName", header: "Name" },
+    { accessorKey: "email", header: "Email" },
+    { accessorKey: "role", header: "Role" },
+    {
+      id: "accountAgeDays",
+      header: "Age (days)",
+      accessorFn: (row) =>
+        Math.floor(Math.random() * (100 - 10 + 1) + 10),
+      cell: (ctx) => ctx.getValue<number>(),
+    },
+  ],
+  []
+);
+```
+
+---
+
+### 5. State and Table Configuration
+
+```tsx
+const [sorting, setSorting] = React.useState<SortingState>([]);
+const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+const [globalFilter, setGlobalFilter] = React.useState("");
+const [pagination, setPagination] = React.useState({
+  pageIndex: 0,
+  pageSize: 5,
+});
+
+const table = useReactTable({
+  data,
+  columns,
+  state: { sorting, columnFilters, globalFilter, pagination },
+  onSortingChange: setSorting,
+  onColumnFiltersChange: setColumnFilters,
+  onPaginationChange: setPagination,
+  onGlobalFilterChange: setGlobalFilter,
+  getCoreRowModel: getCoreRowModel(),
+  getSortedRowModel: getSortedRowModel(),
+  getFilteredRowModel: getFilteredRowModel(),
+  getPaginationRowModel: getPaginationRowModel(),
+  autoResetPageIndex: false,
+});
+```
+
+---
+
+### 6. Render Examples
+
+#### Global Search
+
+```tsx
+<input
+  className="control-input"
+  value={globalFilter ?? ""}
+  onChange={(e) => table.setGlobalFilter(e.target.value)}
+  placeholder="Search all columns..."
+/>
+```
+
+---
+
+#### Role Filtering
+
+```tsx
+<select
+  className="control-select"
+  value={(table.getColumn("role")?.getFilterValue() as string) ?? ""}
+  onChange={(e) =>
+    table.getColumn("role")?.setFilterValue(e.target.value || undefined)
+  }
+>
+  <option value="">All roles</option>
+  <option value="admin">admin</option>
+  <option value="editor">editor</option>
+  <option value="viewer">viewer</option>
+</select>
+```
+
+---
+
+#### Header
+
+```tsx
+<thead>
+  {table.getHeaderGroups().map((hg) => (
+    <tr key={hg.id}>
+      {hg.headers.map((h) => (
+        <th
+          key={h.id}
+          onClick={h.column.getToggleSortingHandler()}
+          className={h.column.getCanSort() ? "sortable" : ""}
+          aria-sort={
+            h.column.getIsSorted() === "asc"
+              ? "ascending"
+              : h.column.getIsSorted() === "desc"
+              ? "descending"
+              : "none"
+          }
+        >
+          {flexRender(h.column.columnDef.header, h.getContext())}
+          {{
+            asc: " ↑",
+            desc: " ↓",
+          }[h.column.getIsSorted() as "asc" | "desc"] ?? null}
+        </th>
+      ))}
+    </tr>
+  ))}
+</thead>
+```
+
+---
+
+#### Body
+
+```tsx
+<tbody>
+  {table.getRowModel().rows.map((row) => (
+    <tr key={row.id}>
+      {row.getVisibleCells().map((cell) => (
+        <td key={cell.id}>
+          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+        </td>
+      ))}
+    </tr>
+  ))}
+
+  {table.getRowModel().rows.length === 0 && (
+    <tr>
+      <td className="empty" colSpan={columns.length}>
+        No data
+      </td>
+    </tr>
+  )}
+</tbody>
+```
+
+---
+
+#### Pagination
+
+```tsx
+<div className="pagination">
+  <button
+    className="btn"
+    onClick={() => table.previousPage()}
+    disabled={!table.getCanPreviousPage()}
+  >
+    Prev
+  </button>
+  <span className="page-info">
+    Page {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
+  </span>
+  <button
+    className="btn"
+    onClick={() => table.nextPage()}
+    disabled={!table.getCanNextPage()}
+  >
+    Next
+  </button>
+</div>
+```
+
+---
+
+## Conclusion
+
+TanStack Table is both **powerful** and **flexible**. You only define your data and columns; the library manages essential features like sorting, filtering, and pagination for you.
+
+This gives you complete freedom on the UI side: you can use ready-made libraries or design your own from scratch.
+
+Based on my own experience, I tried to cover the most essential parts. If you have further questions, feel free to share them in the comments — I'll do my best to answer.
