@@ -17,7 +17,7 @@ export default function PostLayout({
 	const { title, date, tags, summary } = frontmatter ?? {};
 
 	return (
-		<article className="prose prose-slate dark:prose-invert max-w-3xl mx-auto py-12">
+		<article className="prose prose-slate dark:prose-invert max-w-3xl mx-auto py-12 md:px-0 px-2">
 			{/* Başlık */}
 			<header className="mb-8">
 				<h1 className="!mb-2 text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-slate-700 to-slate-500 dark:from-white dark:via-slate-200 dark:to-slate-400">

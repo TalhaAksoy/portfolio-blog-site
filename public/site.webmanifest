@@ -1,0 +1,9 @@
+{
+  "name": "Selim Talha Aksoy — Portfolyo",
+  "short_name": "Talha",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a"
+}
