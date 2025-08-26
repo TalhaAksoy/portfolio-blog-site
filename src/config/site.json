@@ -1,0 +1,24 @@
+{
+  "profile": {
+    "name": "Selim Talha Aksoy",
+    "handle": "Talha",
+    "title": "Portfolio",
+    "tagline": "Modern web geliştirici",
+    "location": "İstanbul, Türkiye"
+  },
+  "contact": {
+    "email": "kullanici@gmail.com"
+  },
+  "social": {
+    "youtube": "https://www.youtube.com/@alhazentr",
+    "linkedin": "https://www.linkedin.com/in/selim-talha-aksoy-1b1649233/",
+    "github": "https://github.com/TalhaAksoy",
+    "gmail": "mailto:selimtalhaaksoy@gmail.com"
+  },
+  "site": {
+    "title": "Selim Talha Aksoy — Portfolyo",
+    "description": "Kişisel site",
+    "language": "tr",
+    "pageSize": 10
+  }
+}

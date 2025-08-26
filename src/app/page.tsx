@@ -1,6 +1,8 @@
 import {GithubButton, GmailButton, LinkedinButton, YoutubeButton} from "@/components/SocialMediaBtn/socialMediaBtn";
 import Link from "next/link";
 import {getAllPostsMeta} from "@/lib/posts";
+import cfg from '@/config/site.json'
+
 
 
 export default async function HomePage() {
@@ -28,7 +30,7 @@ export default async function HomePage() {
                    bg-clip-text text-transparent
                    bg-gradient-to-r from-slate-800 via-slate-900 to-black
                    dark:from-white dark:via-slate-200 dark:to-slate-300">
-              Mustangtr
+              {cfg.profile.handle}
             </h1>
 
             <p className="mt-4 text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl">
@@ -63,10 +65,10 @@ export default async function HomePage() {
                     dark:border-slate-800/60 dark:bg-slate-900/40
                     shadow-[0_8px_40px_-12px_rgba(0,0,0,0.2)]
                     flex flex-col items-center justify-evenly p-4">
-              <YoutubeButton title="YouTube" href="https://youtube.com/@kullanici" size={36} className="text-slate-700 dark:text-slate-200 hover:text-red-600" />
-              <LinkedinButton title="LinkedIn" href="https://linkedin.com/in/kullanici" size={36} className="text-slate-700 dark:text-slate-200 hover:text-blue-600" />
-              <GithubButton title="GitHub" href="https://github.com/kullanici" size={36} className="text-slate-700 dark:text-slate-200 hover:text-black dark:hover:text-white" />
-              <GmailButton title="Mail" href="mailto:kullanici@gmail.com" size={36} className="text-slate-700 dark:text-slate-200 hover:text-rose-500" />
+              <YoutubeButton title="YouTube" href={cfg.social.youtube} size={36} className="text-slate-700 dark:text-slate-200 hover:text-red-600" />
+              <LinkedinButton title="LinkedIn" href={cfg.social.linkedin} size={36} className="text-slate-700 dark:text-slate-200 hover:text-blue-600" />
+              <GithubButton title="GitHub" href={cfg.social.github} size={36} className="text-slate-700 dark:text-slate-200 hover:text-black dark:hover:text-white" />
+              <GmailButton title="Mail" href={cfg.social.gmail} size={36} className="text-slate-700 dark:text-slate-200 hover:text-rose-500" />
             </div>
           </aside>
         </div>

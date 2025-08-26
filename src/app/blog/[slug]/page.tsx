@@ -9,21 +9,40 @@ import { getPost, getPostSlugs } from "@/lib/posts";
 import PostLayout from "@/components/PostLayout/postLayout";
 import Pre from "@/components/Mdx/pre";
 import rehypeExternalLinks from "rehype-external-links";
+import cfg from '@/config/site.json'
 
 export const runtime = "nodejs"; // Shiki için Node runtime
 export const dynamicParams = false;
 
 type PageProps = { params: Promise<{ slug: string }> }; // <-- Promise!
 
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+	const {slug} = await params;
+	const {meta} = await getPost(slug);
+
+	const canonical = `/blog/${slug}`;
+
+	return {
+		title: meta.title,                     // template ile "... | Selim Talha Aksoy"
+		description: meta.summary,
+		alternates: {canonical},
+		openGraph: {
+			type: "article",
+			url: canonical,
+			title: meta.title,
+			description: meta.summary,
+			siteName: cfg.site.title,
+			publishedTime: meta.date,
+			authors: [cfg.profile.name],
+			tags: meta.tags,
+		},
+	};
+}
+
 export async function generateStaticParams() {
 	const slugs = await getPostSlugs();
 	return slugs.map((slug) => ({ slug }));
-}
-
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-	const { slug } = await params;              // <-- await
-	const { meta } = await getPost(slug);
-	return { title: meta.title, description: meta.summary };
 }
 
 const prettyCodeOptions = {

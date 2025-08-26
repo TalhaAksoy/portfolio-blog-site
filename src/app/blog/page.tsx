@@ -2,12 +2,13 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getAllPostsMeta } from "@/lib/posts";
+import cfg from '@/config/site.json'
 
 export const metadata: Metadata = { title: "Blog" };
 export const revalidate = 60;
 
 const fmt = new Intl.DateTimeFormat("tr-TR", { dateStyle: "medium" });
-const PAGE_SIZE = 10;
+const PAGE_SIZE = cfg.site.pageSize ?? 10;
 
 type PageProps = {
 	searchParams: Promise<{ q?: string; page?: string }>;
