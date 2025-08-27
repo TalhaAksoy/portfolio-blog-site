@@ -1,18 +1,66 @@
-import {GithubButton, GmailButton, LinkedinButton, YoutubeButton} from "@/components/SocialMediaBtn/socialMediaBtn";
+import { GithubButton, GmailButton, LinkedinButton, YoutubeButton } from "@/components/SocialMediaBtn/socialMediaBtn";
 import Link from "next/link";
-import {getAllPostsMeta} from "@/lib/posts";
+import { getAllPostsMeta } from "@/lib/posts";
 import cfg from '@/config/site.json'
+import { ThreeDMarquee } from "@/components/ui/3d-marquee";
+import { shuffle } from "@/lib/utils";
+import { PointerHighlight } from "@/components/ui/pointer-highlight";
 
 
 
 export default async function HomePage() {
   // Son 4 yazıyı al
   const posts = (await getAllPostsMeta()).slice(0, 4);
+  const images = [
+    "/logos/Node.js_logo.png",
+    "/logos/Flutter_logo.png",
+    "/logos/Javascript_logo.png",
+    "/logos/Typescript_logo.png",
+    "/logos/Deno_logo.png",
+    "/logos/Tailwind_logo.png",
+    "/logos/Github_logo.png",
+    "/logos/React_logo.png",
+    "/logos/Next_logo.png",
+    "/logos/Lua_logo.png",
+    "/logos/C_logo.png",
+    "/logos/Cpp_logo.png",
+    "/logos/42_logo.png",
+    "/logos/Node.js_logo.png",
+    "/logos/Flutter_logo.png",
+    "/logos/Javascript_logo.png",
+    "/logos/Typescript_logo.png",
+    "/logos/Deno_logo.png",
+    "/logos/Tailwind_logo.png",
+    "/logos/Github_logo.png",
+    "/logos/React_logo.png",
+    "/logos/Next_logo.png",
+    "/logos/Lua_logo.png",
+    "/logos/C_logo.png",
+    "/logos/Cpp_logo.png",
+    "/logos/42_logo.png",
+    "/logos/Node.js_logo.png",
+    "/logos/Flutter_logo.png",
+    "/logos/Javascript_logo.png",
+    "/logos/Typescript_logo.png",
+    "/logos/Deno_logo.png",
+    "/logos/Tailwind_logo.png",
+    "/logos/Github_logo.png",
+    "/logos/React_logo.png",
+    "/logos/Next_logo.png",
+    "/logos/Lua_logo.png",
+    "/logos/C_logo.png",
+    "/logos/Cpp_logo.png",
+    "/logos/42_logo.png",
+  ];
+
 
   return (
     <>
       {/* HERO */}
       <section className="relative w-full h-[calc(100dvh-5rem)] flex items-center">
+        <div className={`absolute inset-0 -z-1 flex items-center justify-center`}>
+          <ThreeDMarquee images={shuffle(images)} className={`w-full h-full`} />
+        </div>
         {/* arkaplan gradyan */}
         <div className="pointer-events-none absolute inset-0 -z-10
                 bg-gradient-to-b from-slate-50 to-white
@@ -20,7 +68,8 @@ export default async function HomePage() {
 
         <div className="mx-auto w-full max-w-6xl px-6 flex items-center justify-evenly">
           {/* sol: metin */}
-          <div className="flex flex-col justify-center py-20">
+          <div className="flex flex-col justify-center py-20 px-2 rounded-lg border border-slate-200/80 bg-white/60 backdrop-blur
+                    dark:border-slate-800/60 dark:bg-slate-900/40">
             <span className="inline-flex items-center gap-2 text-xs uppercase tracking-widest
                       text-slate-500 dark:text-slate-400">
               👋 Selam, ben
@@ -65,10 +114,18 @@ export default async function HomePage() {
                     dark:border-slate-800/60 dark:bg-slate-900/40
                     shadow-[0_8px_40px_-12px_rgba(0,0,0,0.2)]
                     flex flex-col items-center justify-evenly p-4">
-              <YoutubeButton title="YouTube" href={cfg.social.youtube} size={36} className="text-slate-700 dark:text-slate-200 hover:text-red-600" />
-              <LinkedinButton title="LinkedIn" href={cfg.social.linkedin} size={36} className="text-slate-700 dark:text-slate-200 hover:text-blue-600" />
-              <GithubButton title="GitHub" href={cfg.social.github} size={36} className="text-slate-700 dark:text-slate-200 hover:text-black dark:hover:text-white" />
-              <GmailButton title="Mail" href={cfg.social.gmail} size={36} className="text-slate-700 dark:text-slate-200 hover:text-rose-500" />
+              <PointerHighlight offset={8} title="Youtube" color="#FF0000">
+                <YoutubeButton title="YouTube" href={cfg.social.youtube} size={36} className="text-slate-700 dark:text-slate-200 group-hover:text-red-600" />
+              </PointerHighlight>
+              <PointerHighlight offset={8} title="LinkedIn">
+                <LinkedinButton title="LinkedIn" href={cfg.social.linkedin} size={36} className="text-slate-700 dark:text-slate-200 group-hover:text-blue-600" />
+              </PointerHighlight>
+              <PointerHighlight offset={8} title="Github" color="#000000">
+                <GithubButton title="GitHub" href={cfg.social.github} size={36} className="text-slate-700 dark:text-slate-200 group-hover:text-black dark:group-hover:text-white" />
+              </PointerHighlight>
+              <PointerHighlight color="#FF0000" offset={8} title="Gmail">
+                <GmailButton title="Mail" href={cfg.social.gmail} size={36} className="text-slate-700 dark:text-slate-200 group-hover:text-rose-500" />
+              </PointerHighlight>
             </div>
           </aside>
         </div>

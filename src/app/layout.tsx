@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar/navbar";
 import Footer from "@/components/Footer/footer";
 import HotToaster from "@/components/Toaster/toaster"; // <- eski yol: ../styles/global.css ise buraya taşı: app/globals.css
 import cfg from '@/config/site.json'
+import {ThemeProvider} from "@/components/theme-provider";
 
 // Varsayılan metadata (Astro'daki title/description karşılığı)
 
@@ -73,21 +74,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="tr" className="h-full">
+    <html lang="tr" className="h-full" suppressHydrationWarning>
     <body className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-    <Navbar title={cfg.profile.name} />
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange>
+      <Navbar title={cfg.profile.name} />
 
-    <main className="mx-auto">
-      {children}
-    </main>
-    <HotToaster/>
-    <Footer
-      name={cfg.profile.name}
-      youtubeUrl={cfg.social.youtube}
-      linkedinUrl={cfg.social.linkedin}
-      githubUrl={cfg.social.github}
-      gmailHref={cfg.social.gmail}
-    />
+      <main className="mx-auto">
+        {children}
+      </main>
+      <HotToaster/>
+      <Footer
+        name={cfg.profile.name}
+        youtubeUrl={cfg.social.youtube}
+        linkedinUrl={cfg.social.linkedin}
+        githubUrl={cfg.social.github}
+        gmailHref={cfg.social.gmail}
+      />
+    </ThemeProvider>
     </body>
     </html>
   );
